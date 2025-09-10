@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Action -->
+    <record id="action_product_review" model="ir.actions.act_window">
+        <field name="name">Product Reviews</field>
+        <field name="res_model">product.review</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first Product Review
+            </p>
+        </field>
+    </record>
+
+
+    <!-- List View -->
+    <record id="view_product_review_list" model="ir.ui.view">
+        <field name="name">product.review.list</field>
+        <field name="model">product.review</field>
+        <field name="arch" type="xml">
+            <list string="Product Reviews" create="true" delete="true">
+                <field name="product_id"/>
+                <field name="customer_name"/>
+                <field name="rating_stars"/>
+                <field name="rating"/>
+                <field name="state" widget="statusbar"/>
+                <field name="review_date"/>
+                <field name="approved_by"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_product_review_form" model="ir.ui.view">
+        <field name="name">product.review.form</field>
+        <field name="model">product.review</field>
+        <field name="arch" type="xml">
+            <form string="Product Review">
+                <sheet>
+                    <group>
+                        <field name="product_id"/>
+                        <field name="customer_name"/>
+                        <field name="rating_stars"/>
+                        <field name="rating" readonly="1"/>
+                        <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                        <field name="review_date"/>
+                    </group>
+                    <group>
+                        <field name="comments"/>
+                    </group>
+                    <group>
+                        <field name="approved_by" readonly="1"/>
+                        <field name="approved_date" readonly="1"/>
+                        <field name="rejected" readonly="1"/>
+                        <field name="rejection_reason" readonly="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_submit_for_approval"
+                            type="object"
+                            string="Submit"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_approve"
+                            type="object"
+                            string="Approve"
+                            class="btn-success"
+                            invisible="state != 'submitted'"/>
+                    <button name="action_reject"
+                            type="object"
+                            string="Reject"
+                            class="btn-danger"
+                            invisible="state != 'submitted'"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_product_review_search" model="ir.ui.view">
+        <field name="name">product.review.search</field>
+        <field name="model">product.review</field>
+        <field name="arch" type="xml">
+            <search string="Search Product Reviews">
+                <field name="product_id"/>
+                <field name="customer_name"/>
+                <field name="state"/>
+                <field name="rating_stars"/>
+                <field name="review_date"/>
+                <filter string="Draft" name="filter_draft" domain="[('state','=','draft')]"/>
+                <filter string="Approved" name="filter_approved" domain="[('state','=','approved')]"/>
+                <filter string="Rejected" name="filter_rejected" domain="[('state','=','rejected')]"/>
+            </search>
+        </field>
+    </record>
+</odoo>
